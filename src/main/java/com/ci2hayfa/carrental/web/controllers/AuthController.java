@@ -32,7 +32,7 @@ import com.ci2hayfa.carrental.web.models.ERole;
 import com.ci2hayfa.carrental.web.models.Role;
 
 // @CrossOrigin(origins = "*", maxAge = 3600)
-@CrossOrigin(origins = "http://localhost:8085", maxAge = 3600, allowCredentials="true")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -60,14 +60,9 @@ public class AuthController {
     String jwt = jwtUtils.generateJwtToken(authentication);
 
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-    List<String> roles = userDetails.getAuthorities().stream()
-        .map(item -> item.getAuthority()).collect(Collectors.toList());
+    List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
 
-    return ResponseEntity.ok(new JwtResponse(jwt,
-        userDetails.getId(),
-        userDetails.getUsername(),
-        userDetails.getEmail(),
-        roles));
+    return ResponseEntity.ok(new JwtResponse(jwt,userDetails));
   }
 
   @PostMapping("/signup")

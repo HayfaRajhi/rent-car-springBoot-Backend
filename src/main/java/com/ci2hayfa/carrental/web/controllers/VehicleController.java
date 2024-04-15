@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +23,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
+@PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
 @RestController
-@RequestMapping("/vehicles")
+@RequestMapping("/api/vehicles")
 public class VehicleController {
 
     private final VehicleService vehicleService;
@@ -31,7 +34,7 @@ public class VehicleController {
         this.vehicleService=vehicleService;
     }
 
-@GetMapping()
+@GetMapping("/all")
 public ResponseEntity<?> getAllVehicles() {
     List<VehicleDTO> vehicleDTOs =this.vehicleService.getAllVehicles().stream()
     .map(VehicleDTO::toVehicleDTO).collect(Collectors.toList());
@@ -43,8 +46,8 @@ public ResponseEntity<?> getCustomerById(@PathVariable Long id) {
     return new ResponseEntity<>(customer,HttpStatus.OK);
 }
 
-@PostMapping("/edit/{id}")
-public ResponseEntity<?> addCustomer(@RequestBody VehicleDTO vehicleDTO) throws DuplicateVehicleException {
+@PostMapping("/add")
+public ResponseEntity<?> addVehicle(@RequestBody VehicleDTO vehicleDTO) throws DuplicateVehicleException {
     Vehicle vehicle =VehicleDTO.fromVehicleDTO(vehicleDTO);        
     return new ResponseEntity<>(this.vehicleService.createVehicle(vehicle),HttpStatus.OK);
 }

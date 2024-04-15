@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +28,10 @@ import com.ci2hayfa.carrental.dao.entities.Vehicle;
 import com.ci2hayfa.carrental.web.messages.ResponseMessage;
 import com.ci2hayfa.carrental.web.models.FileInfo;
 
-
 @Controller
 @RequestMapping("/api")
-@CrossOrigin("http://localhost:4200")
+@PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials="true")
 public class FilesController {
 
   @Autowired
