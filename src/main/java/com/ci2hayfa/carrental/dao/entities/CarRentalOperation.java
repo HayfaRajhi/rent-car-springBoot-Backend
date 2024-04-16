@@ -2,6 +2,7 @@ package com.ci2hayfa.carrental.dao.entities;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +30,10 @@ public class CarRentalOperation {
     private Customer customer;
     @ManyToOne
     private Vehicle vehicle;
+    @Column(nullable = true)
     private String guaranteeType;
+    @Column(nullable = true)
+
     private Double rentalFee;
     private Double totalPrice;
 

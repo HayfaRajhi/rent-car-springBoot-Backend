@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
     allowCredentials = "true"
 )
 @RestController
-@RequestMapping("/renting")
+@RequestMapping("api/locations")
 public class CarRentalController {
 
     @Autowired
     VehicleService vehicleService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<?> getAllVehicles() {
         List<VehicleDTO> vehicleDTOs =
             this.vehicleService.getAllVehicles()
@@ -52,7 +52,7 @@ public class CarRentalController {
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
-    @PostMapping("/edit/{id}")
+    @PostMapping("/add")
     public ResponseEntity<?> addCustomer(@RequestBody VehicleDTO vehicleDTO)
         throws DuplicateVehicleException {
         Vehicle vehicle = VehicleDTO.fromVehicleDTO(vehicleDTO);
